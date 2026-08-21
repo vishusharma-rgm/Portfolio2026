@@ -1,0 +1,21 @@
+.mascot-canvas-wrap {
+  width: 300px;
+  max-width: 70vw;
+  height: 300px;
+  position: relative;
+}
+
+.mascot-canvas-wrap canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.mascot-canvas-wrap canvas {
+  outline: none;
+}
+
+@media (max-width: 640px) {
+  .mascot-canvas-wrap {
+    height: 260px;
+  }
+}

@@ -1,0 +1,144 @@
+.sky-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80vh;
+  min-height: 640px;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.sky-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    #1e4fd6 0%,
+    #3f6bed 22%,
+    #7ba0f5 46%,
+    #cfdcfb 68%,
+    var(--bg-cream) 100%
+  );
+}
+
+.sky-clouds {
+  position: absolute;
+  inset: -10% -10% 0 -10%;
+  transition: transform 0.3s ease-out;
+  will-change: transform;
+}
+
+.cloud {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(38px);
+  background: radial-gradient(circle at 40% 35%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.35) 60%, transparent 75%);
+  opacity: 0.9;
+}
+.cloud-1 {
+  width: 620px;
+  height: 340px;
+  top: 2%;
+  left: -6%;
+  background: radial-gradient(circle at 40% 35%, rgba(255, 214, 224, 0.95), rgba(255, 214, 224, 0.25) 55%, transparent 75%);
+  animation: drift-slow 32s ease-in-out infinite;
+}
+.cloud-2 {
+  width: 420px;
+  height: 260px;
+  top: 14%;
+  right: -4%;
+  animation: drift-slow 26s ease-in-out infinite reverse;
+}
+.cloud-3 {
+  width: 340px;
+  height: 200px;
+  top: 34%;
+  left: 8%;
+  opacity: 0.6;
+  animation: drift-slow 40s ease-in-out infinite;
+}
+.cloud-4 {
+  width: 300px;
+  height: 180px;
+  top: 6%;
+  left: 42%;
+  opacity: 0.55;
+  background: radial-gradient(circle at 40% 35%, rgba(255, 200, 210, 0.8), transparent 70%);
+  animation: drift-slow 22s ease-in-out infinite reverse;
+}
+
+.cloud-wash {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 40%);
+  mix-blend-mode: overlay;
+}
+
+@keyframes drift-slow {
+  0%,
+  100% {
+    transform: translateX(0) translateY(0);
+  }
+  50% {
+    transform: translateX(30px) translateY(-14px);
+  }
+}
+
+.petal-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.petal {
+  position: absolute;
+  top: -5%;
+  border-radius: 60% 10% 60% 10%;
+  opacity: 0.75;
+  animation-name: petal-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  transform: rotate(var(--rot));
+}
+.petal-pink {
+  background: linear-gradient(135deg, #ffd7de, #ffb9c6);
+}
+.petal-orange {
+  background: linear-gradient(135deg, #ffd2ad, var(--orange));
+  opacity: 0.55;
+}
+
+@keyframes petal-fall {
+  0% {
+    transform: translate(0, -8vh) rotate(var(--rot));
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.8;
+  }
+  92% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(var(--drift), 92vh) rotate(calc(var(--rot) + 180deg));
+    opacity: 0;
+  }
+}
+
+.sky-fade-to-cream {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30%;
+  background: linear-gradient(180deg, transparent, var(--bg-cream));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cloud,
+  .petal {
+    animation: none !important;
+  }
+}

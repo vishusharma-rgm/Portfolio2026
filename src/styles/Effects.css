@@ -1,0 +1,78 @@
+.confetti-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 900;
+}
+
+.steam-burst {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 900;
+  pointer-events: none;
+}
+
+.steam-burst span {
+  position: absolute;
+  bottom: 0;
+  width: 6px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.steam-burst.show span {
+  animation: rise 1.4s ease-out forwards;
+}
+
+@keyframes rise {
+  0% {
+    opacity: 0.7;
+  }
+  to {
+    transform: translateY(-70px) scale(2);
+    opacity: 0;
+  }
+}
+
+.exit-veil {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 9998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.exit-veil.on {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.file-flash {
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  z-index: 9997;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.file-flash.on {
+  animation: fileflash 0.5s ease;
+}
+
+@keyframes fileflash {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+  }
+}
