@@ -85,6 +85,14 @@
   background: linear-gradient(270deg, var(--bg-cream), rgba(253, 241, 230, 0));
 }
 
+[data-theme="dark"] .skills-marquee::before {
+  background: linear-gradient(90deg, var(--bg-cream), rgba(10, 10, 18, 0));
+}
+
+[data-theme="dark"] .skills-marquee::after {
+  background: linear-gradient(270deg, var(--bg-cream), rgba(10, 10, 18, 0));
+}
+
 .marquee-row {
   width: 100%;
   overflow: hidden;

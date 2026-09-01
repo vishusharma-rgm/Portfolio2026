@@ -53,6 +53,7 @@ function ExperienceCopy({ item }) {
 
 export default function WorkExperience() {
   const sectionRef = useRef(null);
+  const leftColumnRef = useRef(null);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -82,9 +83,19 @@ export default function WorkExperience() {
       onUpdate: (self) => setProgress(self.progress),
     });
 
+    const pinTrigger = ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: "top top",
+      end: "bottom bottom",
+      pin: leftColumnRef.current,
+      pinSpacing: false,
+      anticipatePin: 1,
+    });
+
     return () => {
       revealTriggers.forEach((tween) => tween.scrollTrigger?.kill());
       scrubTrigger.kill();
+      pinTrigger.kill();
     };
   }, []);
 
@@ -95,7 +106,7 @@ export default function WorkExperience() {
         <span>My Work Experience.</span>
       </h1>
 
-      <div className="left-column">
+      <div className="left-column" ref={leftColumnRef}>
         <div className="parts-assembling">
           <Canvas camera={{ position: [0, 50, 210], fov: 75 }} dpr={[1, 1.8]} gl={{ antialias: true, alpha: true }}>
             <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />

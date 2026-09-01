@@ -125,6 +125,12 @@
   transform: translateX(3px);
 }
 
+[data-theme="dark"] .btn-outline {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--ink);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
 .hero-tagline {
   margin-top: 24px;
   color: var(--muted);

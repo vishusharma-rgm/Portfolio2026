@@ -9,6 +9,7 @@
   --ink: #111111;
   --ink-soft: #4a453f;
   --muted: #747474;
+  --grey: #f2f2f2;
   --line: rgba(231, 231, 231, 0.75);
   --line-strong: #e7e7e7;
 
@@ -34,6 +35,7 @@
   --ink: #ffffff;
   --ink-soft: #d6d0cc;
   --muted: #aaa3a0;
+  --grey: rgba(255, 255, 255, 0.08);
   --line: rgba(255, 255, 255, 0.12);
   --line-strong: rgba(255, 255, 255, 0.18);
   --pill-bg: rgba(255, 255, 255, 0.1);
@@ -58,7 +60,7 @@ body {
 }
 
 #root {
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body::after {

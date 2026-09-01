@@ -3,7 +3,7 @@ import { useRef, useState, useCallback } from "react";
 // Synthesizes UI sound effects with the Web Audio API — no audio assets required.
 export function useSound() {
   const ctxRef = useRef(null);
-  const [enabled, setEnabled] = useState(false);
+  const [enabled, setEnabled] = useState(true);
 
   const ensureCtx = useCallback(() => {
     if (!ctxRef.current) {
@@ -13,10 +13,10 @@ export function useSound() {
     return ctxRef.current;
   }, []);
 
-  const beep = useCallback(
+  const playTone = useCallback(
     (freq = 440, dur = 0.06, vol = 0.05, type = "sine") => {
-      if (!enabled) return;
       const ctx = ensureCtx();
+      if (ctx.state === "suspended") ctx.resume();
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = type;
@@ -28,19 +28,24 @@ export function useSound() {
       gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + dur);
       osc.stop(ctx.currentTime + dur);
     },
-    [enabled, ensureCtx]
+    [ensureCtx]
+  );
+
+  const beep = useCallback(
+    (freq = 440, dur = 0.06, vol = 0.05, type = "sine") => {
+      if (!enabled) return;
+      playTone(freq, dur, vol, type);
+    },
+    [enabled, playTone]
   );
 
   const toggle = useCallback(() => {
     setEnabled((prev) => {
       const next = !prev;
-      if (next) {
-        ensureCtx();
-        setTimeout(() => beep(660, 0.08, 0.06), 0);
-      }
+      setTimeout(() => playTone(next ? 660 : 260, 0.08, 0.06), 0);
       return next;
     });
-  }, [ensureCtx, beep]);
+  }, [playTone]);
 
   return { enabled, toggle, beep };
 }

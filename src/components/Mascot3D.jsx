@@ -31,7 +31,7 @@ function CuteRobotModel() {
     groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 1.15) * 0.045;
   });
 
-  return <primitive ref={groupRef} object={scene} scale={1.75} dispose={null} />;
+  return <primitive ref={groupRef} object={scene} dispose={null} />;
 }
 
 function Lights({ darkMode }) {
@@ -48,7 +48,7 @@ export default function Mascot3D({ darkMode = false }) {
   return (
     <div className="mascot-canvas-wrap">
       <Canvas
-        camera={{ position: [0.4, 1.17, 11.35], fov: 25 }}
+        camera={{ position: [0.4, 1.17, 12.8], fov: 25 }}
         dpr={[1, 1.8]}
         gl={{ antialias: true, alpha: true }}
         style={{ background: "transparent" }}

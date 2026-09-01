@@ -63,7 +63,7 @@ footer {
   bottom: 24px;
   left: 50%;
   transform: translateX(-50%) translateY(18px);
-  background: var(--ink);
+  background: rgba(17, 17, 17, 0.92);
   border-radius: 999px;
   padding: 10px 8px;
   display: flex;

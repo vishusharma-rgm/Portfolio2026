@@ -1,5 +1,4 @@
 import { useEffect, useState, useCallback } from "react";
-import BootSequence from "./components/BootSequence";
 import TopBar from "./components/TopBar";
 import Hero from "./components/Hero";
 import Skills from "./components/Skills";
@@ -12,7 +11,6 @@ import { useSound } from "./hooks/useSound";
 import { profile } from "./data/portfolio";
 
 export default function App() {
-  const [booted, setBooted] = useState(false);
   const [termOpen, setTermOpen] = useState(false);
   const [confettiKey, setConfettiKey] = useState(0);
   const [steamKey, setSteamKey] = useState(0);
@@ -46,13 +44,14 @@ export default function App() {
 
   return (
     <>
-      {!booted && <BootSequence onDone={() => setBooted(true)} beep={beep} />}
-
       <TopBar
         soundOn={soundOn}
         onToggleSound={toggleSound}
         darkMode={darkMode}
-        onToggleTheme={() => setDarkMode((value) => !value)}
+        onToggleTheme={() => {
+          beep(520, 0.08, 0.045);
+          setDarkMode((value) => !value);
+        }}
       />
 
       <Hero onOpenTerminal={() => setTermOpen(true)} onResume={openResume} darkMode={darkMode} />
