@@ -103,6 +103,16 @@
   transform: rotate(18deg);
 }
 
+[data-theme="dark"] .btn-dark {
+  background: #ffffff;
+  color: #111111;
+  box-shadow: 0 10px 26px -10px rgba(0, 0, 0, 0.7);
+}
+
+[data-theme="dark"] .btn-dark svg {
+  background: rgba(17, 17, 17, 0.12);
+}
+
 .btn-outline {
   background: #fff;
   color: var(--ink);

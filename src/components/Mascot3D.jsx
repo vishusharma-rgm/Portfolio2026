@@ -48,7 +48,9 @@ export default function Mascot3D({ darkMode = false }) {
   return (
     <div className="mascot-canvas-wrap">
       <Canvas
-        camera={{ position: [0.4, 1.17, 12.8], fov: 25 }}
+        // Keep a little breathing room around the model so its head never clips
+        // when the pointer-driven tilt changes the bounds of the scene.
+        camera={{ position: [0.4, 1.17, 14.5], fov: 28 }}
         dpr={[1, 1.8]}
         gl={{ antialias: true, alpha: true }}
         style={{ background: "transparent" }}

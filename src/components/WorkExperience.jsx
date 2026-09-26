@@ -54,7 +54,10 @@ function ExperienceCopy({ item }) {
 export default function WorkExperience() {
   const sectionRef = useRef(null);
   const leftColumnRef = useRef(null);
-  const [progress, setProgress] = useState(0);
+  const rightColumnRef = useRef(null);
+  // Start with a recognizable assembled robot; scrolling through the section
+  // then reveals the destructured parts described by the heading.
+  const [progress, setProgress] = useState(1);
 
   useEffect(() => {
     const revealTriggers = gsap.utils.toArray(".work-experience-section").map((el) =>
@@ -80,12 +83,13 @@ export default function WorkExperience() {
       start: "top top",
       end: "bottom bottom",
       scrub: 0.5,
-      onUpdate: (self) => setProgress(self.progress),
+      onUpdate: (self) => setProgress(1 - self.progress),
     });
 
     const pinTrigger = ScrollTrigger.create({
       trigger: sectionRef.current,
       start: "top top",
+      endTrigger: rightColumnRef.current,
       end: "bottom bottom",
       pin: leftColumnRef.current,
       pinSpacing: false,
@@ -119,7 +123,7 @@ export default function WorkExperience() {
         </div>
       </div>
 
-      <div className="right-column">
+      <div className="right-column" ref={rightColumnRef}>
         {workExperiences.map((item) => (
           <div className="work-experience-section" key={item.company}>
             <ExperienceCopy item={item} />
