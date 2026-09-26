@@ -7,6 +7,7 @@ import Projects from "./components/Projects";
 import Contact from "./components/Contact";
 import Terminal from "./components/Terminal";
 import SystemDesignInterview from "./components/SystemDesignInterview";
+import DigitalRoom from "./components/DigitalRoom";
 import { ConfettiCanvas, SteamBurst, ExitVeil, FileFlash } from "./components/Effects";
 import { useSound } from "./hooks/useSound";
 import { profile } from "./data/portfolio";
@@ -18,6 +19,7 @@ export default function App() {
   const [fileFlashKey, setFileFlashKey] = useState(0);
   const [exitActive, setExitActive] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const [roomOpen, setRoomOpen] = useState(false);
 
   const { enabled: soundOn, toggle: toggleSound, beep } = useSound();
 
@@ -53,6 +55,7 @@ export default function App() {
           beep(520, 0.08, 0.045);
           setDarkMode((value) => !value);
         }}
+        onOpenRoom={() => setRoomOpen(true)}
       />
 
       <Hero onOpenTerminal={() => setTermOpen(true)} onResume={openResume} darkMode={darkMode} />
@@ -61,6 +64,7 @@ export default function App() {
       <WorkExperience />
       <Projects onExternalLink={handleExternalLink} onOpenTerminal={() => setTermOpen(true)} />
       <SystemDesignInterview />
+      <DigitalRoom open={roomOpen} onClose={() => setRoomOpen(false)} />
       <Contact onExternalLink={handleExternalLink} onResume={openResume} />
 
       <Terminal

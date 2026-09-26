@@ -3,7 +3,7 @@ import { FiMenu, FiMoon, FiSun, FiVolume2, FiVolumeX, FiX } from "react-icons/fi
 import { profile } from "../data/portfolio";
 import "../styles/TopBar.css";
 
-export default function TopBar({ soundOn, onToggleSound, darkMode, onToggleTheme }) {
+export default function TopBar({ soundOn, onToggleSound, darkMode, onToggleTheme, onOpenRoom }) {
   const [expanded, setExpanded] = useState(false);
   const [hovered, setHovered] = useState(false);
   const menuOpen = expanded || hovered;
@@ -28,6 +28,7 @@ export default function TopBar({ soundOn, onToggleSound, darkMode, onToggleTheme
             <a href="#projects" onClick={close}>Work.</a>
             <a href={profile.linkedin} target="_blank" rel="noreferrer" onClick={close}>LinkedIn.</a>
             <a href={profile.github} target="_blank" rel="noreferrer" onClick={close}>Github.</a>
+            <button className="room-link" onClick={() => { close(); onOpenRoom(); }}>Digital Room.</button>
           </div>
         </nav>
       </div>

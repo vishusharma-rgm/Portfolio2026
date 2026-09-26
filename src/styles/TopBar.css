@@ -115,6 +115,7 @@
 .nav-links a:hover {
   color: var(--orange);
 }
+.room-link { color: var(--ink); font: inherit; font-weight: 600; white-space: nowrap; }.room-link:hover { color: var(--orange); }
 
 .icon-btn {
   width: 50px;
