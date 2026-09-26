@@ -8,7 +8,7 @@ An interactive 3D "Boot-Up Room" portfolio built with a real modern stack:
 - **Web Audio API** — synthesized UI sounds (boot beep, typing clicks, easter-egg chime) — zero audio files needed
 - **Plain CSS files** — one stylesheet per component, custom design tokens (no Tailwind/Bootstrap defaults)
 
-## Features
+## Features--
 
 1. Glitch boot-up intro sequence
 2. Real 3D room scene rendered with Three.js — mouse-driven parallax rotation
