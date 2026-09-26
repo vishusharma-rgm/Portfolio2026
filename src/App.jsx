@@ -6,7 +6,7 @@ import WorkExperience from "./components/WorkExperience";
 import Projects from "./components/Projects";
 import Contact from "./components/Contact";
 import Terminal from "./components/Terminal";
-import SystemsLab from "./components/SystemsLab";
+import SystemDesignInterview from "./components/SystemDesignInterview";
 import { ConfettiCanvas, SteamBurst, ExitVeil, FileFlash } from "./components/Effects";
 import { useSound } from "./hooks/useSound";
 import { profile } from "./data/portfolio";
@@ -60,7 +60,7 @@ export default function App() {
       <Skills />
       <WorkExperience />
       <Projects onExternalLink={handleExternalLink} onOpenTerminal={() => setTermOpen(true)} />
-      <SystemsLab />
+      <SystemDesignInterview />
       <Contact onExternalLink={handleExternalLink} onResume={openResume} />
 
       <Terminal
