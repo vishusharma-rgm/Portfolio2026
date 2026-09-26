@@ -54,7 +54,7 @@ body {
   color: var(--ink);
   font-family: var(--font-body);
   scroll-behavior: smooth;
-  padding: 16px 0;
+  padding: 0;
   position: relative;
   min-height: 100vh;
 }

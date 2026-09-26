@@ -18,6 +18,8 @@ export default function Terminal({ open, onClose, beep, onEasterEgg, onCoffee, o
     { type: "system", text: "Terminal ready. Type 'help' to see available commands." },
   ]);
   const [value, setValue] = useState("");
+  const [history, setHistory] = useState([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
   const inputRef = useRef(null);
   const bodyRef = useRef(null);
 
@@ -37,7 +39,7 @@ export default function Terminal({ open, onClose, beep, onEasterEgg, onCoffee, o
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  const skillsFlat = skillGroups.map((g) => g.items.join(", ")).join(", ");
+  const skillsFlat = skillGroups.map((g) => `${g.title}: ${g.items.map((item) => item.name).join(", ")}`).join("\n");
   const projectsText = projects
     .map((p, i) => `${i + 1}. ${p.name.padEnd(20)} — ${p.stack}`)
     .join("\n");
@@ -46,7 +48,12 @@ export default function Terminal({ open, onClose, beep, onEasterEgg, onCoffee, o
     help: () => `Available commands:
   whoami        — who is ${profile.name}
   skills        — tech stack
+  stack         — grouped engineering stack
   projects      — list of projects
+  case-study    — architecture case studies
+  open-source   — open source focus
+  status        — current build focus
+  tree          — portfolio structure
   resume        — open resume
   contact       — get in touch
   coffee        — brew something
@@ -55,7 +62,12 @@ export default function Terminal({ open, onClose, beep, onEasterEgg, onCoffee, o
     whoami: () =>
       `${profile.name} — CS student, backend & distributed systems focus.\nCurrently building: queues, caches, and things that shouldn't fall over.`,
     skills: () => skillsFlat,
+    stack: () => skillsFlat,
     projects: () => projectsText,
+    "case-study": () => projects.map((p) => `${p.name}\n  problem: ${p.description}\n  stack: ${p.stack.join(", ")}\n  result: scalable backend workflow with measurable reliability gains.`).join("\n\n"),
+    "open-source": () => `Focus areas:\n  • distributed systems and queue workers\n  • Java/Spring Boot backend patterns\n  • WebSocket and CRDT collaboration\n  • reusable API, caching, and observability tooling\n\nGitHub: ${profile.github}`,
+    status: () => `BUILD: online\nFOCUS: backend systems + distributed workflows\nSTACK: Java, Spring Boot, PostgreSQL, Redis, RabbitMQ\nMODE: shipping reliable systems`,
+    tree: () => `portfolio/\n├── hero/\n├── experience/\n├── projects/\n├── terminal/\n└── contact/`,
     resume: () => {
       onResume();
       return "Opening resume.pdf ...";
@@ -70,6 +82,8 @@ export default function Terminal({ open, onClose, beep, onEasterEgg, onCoffee, o
 
   const run = (raw) => {
     const cmd = raw.trim().toLowerCase();
+    if (cmd) setHistory((prev) => [...prev.slice(-19), raw]);
+    setHistoryIndex(-1);
     setLines((prev) => [...prev, { type: "echo", text: raw }]);
     if (cmd === "") return;
     if (cmd === "clear") {
@@ -121,6 +135,7 @@ export default function Terminal({ open, onClose, beep, onEasterEgg, onCoffee, o
               <span className="dot y" />
               <span className="dot g" />
               <span className="title">{profile.name.toLowerCase()}@portfolio: ~</span>
+              <div className="term-status"><span /> online · v2.0</div>
               <span className="close" onClick={onClose}>
                 close ✕
               </span>
@@ -149,6 +164,20 @@ export default function Terminal({ open, onClose, beep, onEasterEgg, onCoffee, o
                   if (e.key === "Enter") {
                     run(value);
                     setValue("");
+                  } else if (e.key === "ArrowUp") {
+                    e.preventDefault();
+                    setHistoryIndex((index) => {
+                      const next = Math.max(0, index < 0 ? history.length - 1 : index - 1);
+                      setValue(history[next] || "");
+                      return next;
+                    });
+                  } else if (e.key === "ArrowDown") {
+                    e.preventDefault();
+                    setHistoryIndex((index) => {
+                      const next = Math.min(history.length, index + 1);
+                      setValue(history[next] || "");
+                      return next;
+                    });
                   } else {
                     beep(300 + Math.random() * 80, 0.02, 0.02);
                   }
@@ -157,6 +186,11 @@ export default function Terminal({ open, onClose, beep, onEasterEgg, onCoffee, o
                 spellCheck="false"
                 placeholder="type 'help'"
               />
+            </div>
+            <div className="term-quick-actions">
+              {['status', 'stack', 'case-study', 'open-source', 'tree'].map((command) => (
+                <button key={command} onClick={() => run(command)}>{command}</button>
+              ))}
             </div>
           </motion.div>
         </motion.div>

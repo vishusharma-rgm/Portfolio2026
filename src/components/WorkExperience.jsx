@@ -1,6 +1,7 @@
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, useAnimations, useGLTF } from "@react-three/drei";
+import * as THREE from "three";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { workExperiences } from "../data/portfolio";
@@ -11,29 +12,40 @@ gsap.registerPlugin(ScrollTrigger);
 function PartsAssemblingModel({ progress }) {
   const groupRef = useRef(null);
   const { scene, animations } = useGLTF("/assets/3d/parts-assembling.glb");
+  const robot = useMemo(() => scene.clone(true), [scene]);
   const { actions } = useAnimations(animations, groupRef);
   const actionRef = useRef(null);
 
   useEffect(() => {
     const action = actions["Take 001"] || Object.values(actions)[0];
     if (!action) return;
-    action.play();
+    action.reset().play();
+    action.setLoop(THREE.LoopOnce, 1);
+    action.clampWhenFinished = true;
     action.paused = true;
+    action.timeScale = 0;
+    action.enabled = true;
     actionRef.current = action;
     return () => action.stop();
   }, [actions]);
 
   useFrame(() => {
+    if (!groupRef.current) return;
+    const scrollProgress = Math.max(0, Math.min(1, progress));
+    const open = scrollProgress < 0.5 ? scrollProgress * 2 : (1 - scrollProgress) * 2;
     const action = actionRef.current;
     if (action) {
-      const duration = action.getClip().duration;
-      const nextTime = duration * progress;
-      if (Math.abs(action.time - nextTime) > 0.01) action.time = nextTime;
+      action.paused = true;
+      action.timeScale = 0;
+      // Open in the middle of every pass, then close at the end.
+      action.time = action.getClip().duration * (1 - open);
+      action.getMixer().update(0);
     }
   });
 
-  return <primitive ref={groupRef} object={scene} />;
+  return <primitive ref={groupRef} object={robot} />;
 }
+
 
 function ExperienceCopy({ item }) {
   return (
@@ -53,11 +65,10 @@ function ExperienceCopy({ item }) {
 
 export default function WorkExperience() {
   const sectionRef = useRef(null);
-  const leftColumnRef = useRef(null);
   const rightColumnRef = useRef(null);
   // Start with a recognizable assembled robot; scrolling through the section
   // then reveals the destructured parts described by the heading.
-  const [progress, setProgress] = useState(1);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const revealTriggers = gsap.utils.toArray(".work-experience-section").map((el) =>
@@ -81,25 +92,15 @@ export default function WorkExperience() {
     const scrubTrigger = ScrollTrigger.create({
       trigger: sectionRef.current,
       start: "top top",
-      end: "bottom bottom",
-      scrub: 0.5,
-      onUpdate: (self) => setProgress(1 - self.progress),
-    });
-
-    const pinTrigger = ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: "top top",
       endTrigger: rightColumnRef.current,
       end: "bottom bottom",
-      pin: leftColumnRef.current,
-      pinSpacing: false,
-      anticipatePin: 1,
+      scrub: 3,
+      onUpdate: (self) => setProgress(self.progress),
     });
 
     return () => {
       revealTriggers.forEach((tween) => tween.scrollTrigger?.kill());
       scrubTrigger.kill();
-      pinTrigger.kill();
     };
   }, []);
 
@@ -110,7 +111,7 @@ export default function WorkExperience() {
         <span>My Work Experience.</span>
       </h1>
 
-      <div className="left-column" ref={leftColumnRef}>
+      <div className="left-column">
         <div className="parts-assembling">
           <Canvas camera={{ position: [0, 50, 210], fov: 75 }} dpr={[1, 1.8]} gl={{ antialias: true, alpha: true }}>
             <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />

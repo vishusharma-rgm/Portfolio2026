@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useRef } from "react";
+import { Suspense, useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
@@ -9,6 +9,7 @@ function CuteRobotModel() {
   const pointer = useRef({ x: 0, y: 0 });
   const smooth = useRef({ x: 0, y: 0 });
   const { scene } = useGLTF("/assets/3d/cute_robot.glb");
+  const robot = useMemo(() => scene.clone(true), [scene]);
 
   useEffect(() => {
     const onPointerMove = (event) => {
@@ -28,10 +29,12 @@ function CuteRobotModel() {
 
     groupRef.current.rotation.y = smooth.current.x * THREE.MathUtils.degToRad(25);
     groupRef.current.rotation.x = -smooth.current.y * THREE.MathUtils.degToRad(14);
-    groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 1.15) * 0.045;
+    groupRef.current.scale.setScalar(1.5);
+    // The GLB's origin sits low, so offset the enlarged model down inside the canvas.
+    groupRef.current.position.y = -0.72 + Math.sin(state.clock.elapsedTime * 1.15) * 0.045;
   });
 
-  return <primitive ref={groupRef} object={scene} dispose={null} />;
+  return <primitive ref={groupRef} object={robot} dispose={null} />;
 }
 
 function Lights({ darkMode }) {
@@ -50,7 +53,7 @@ export default function Mascot3D({ darkMode = false }) {
       <Canvas
         // Keep a little breathing room around the model so its head never clips
         // when the pointer-driven tilt changes the bounds of the scene.
-        camera={{ position: [0.4, 1.17, 14.5], fov: 28 }}
+        camera={{ position: [0.4, 1.6, 18], fov: 25 }}
         dpr={[1, 1.8]}
         gl={{ antialias: true, alpha: true }}
         style={{ background: "transparent" }}

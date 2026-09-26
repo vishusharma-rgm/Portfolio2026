@@ -51,8 +51,10 @@
   font-size: 11px;
   color: var(--muted);
 }
+.term-status { margin-left: auto; color: #7ee8b0; font-family: var(--font-mono); font-size: 10px; }
+.term-status span { display: inline-block; width: 6px; height: 6px; margin-right: 5px; border-radius: 50%; background: #7ee8b0; }
 .term-topbar .close {
-  margin-left: auto;
+  margin-left: 14px;
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--muted);
@@ -110,3 +112,20 @@
   font-family: var(--font-mono);
   font-size: 13px;
 }
+
+.term-quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 18px 10px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.term-quick-actions button {
+  padding: 5px 8px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 4px;
+  color: #c9f7d0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+.term-quick-actions button:hover { border-color: var(--brass); color: var(--brass); }

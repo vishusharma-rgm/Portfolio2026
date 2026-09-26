@@ -2,7 +2,7 @@
   display: flex;
   align-items: flex-start;
   width: 100%;
-  min-height: 380vh;
+  min-height: auto;
   position: relative;
 }
 
@@ -37,7 +37,8 @@
 }
 
 .work-experience-main-wrapper .left-column {
-  position: relative;
+  position: sticky;
+  top: 0;
   width: 50%;
   height: 100vh;
   overflow: hidden;
@@ -48,7 +49,7 @@
 
 .work-experience-main-wrapper .right-column {
   width: 50%;
-  padding: 200px 50px 760px;
+  padding: 200px 50px 0;
   margin: auto;
 }
 

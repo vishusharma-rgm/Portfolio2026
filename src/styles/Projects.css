@@ -70,6 +70,52 @@
   text-align: left;
 }
 
+.case-study-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.case-study {
+  position: relative;
+  min-height: 300px;
+  padding: 26px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--card-bg);
+}
+
+.case-study-index,
+.coming-soon-kicker {
+  color: var(--orange);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+
+.case-study h3 { margin-top: 34px; font-size: 24px; }
+.case-study p { margin-top: 12px; color: var(--muted); line-height: 1.5; }
+.case-study-meta { display: flex; flex-direction: column; gap: 5px; margin-top: 22px; font-size: 12px; }
+.case-study-meta span { color: var(--muted); }
+.case-study-meta strong { font-size: 13px; }
+
+.open-source-coming-soon {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 56px 24px;
+  text-align: center;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--card-bg);
+}
+.open-source-coming-soon h3 { margin-top: 14px; font-size: 42px; }
+.open-source-coming-soon p { max-width: 520px; margin: 14px auto 24px; color: var(--muted); line-height: 1.5; }
+.open-source-coming-soon button { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 999px; background: var(--ink); color: var(--bg-cream); font-weight: 600; }
+
+@media (max-width: 800px) {
+  .case-study-grid { grid-template-columns: 1fr; }
+}
+
 .project-card {
   min-width: 400px;
   width: 424px;

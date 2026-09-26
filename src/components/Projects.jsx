@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { FiExternalLink, FiGithub } from "react-icons/fi";
 import { projects } from "../data/portfolio";
 import "../styles/Projects.css";
@@ -40,22 +41,51 @@ function ProjectImage({ type, title }) {
   );
 }
 
-export default function Projects({ onExternalLink }) {
+export default function Projects({ onExternalLink, onOpenTerminal }) {
+  const [activeTab, setActiveTab] = useState("Projects");
+
+  const tabs = ["Projects", "Case Studies", "Open Source"];
+
+  const renderCaseStudies = () => (
+    <div className="open-source-coming-soon">
+      <span className="coming-soon-kicker">CASE STUDIES</span>
+      <h3>Coming soon.</h3>
+      <p>Deep dives into architecture decisions, scaling trade-offs, system diagrams, and measurable project outcomes are being written.</p>
+    </div>
+  );
+
+  const renderOpenSource = () => (
+    <div className="open-source-coming-soon">
+      <span className="coming-soon-kicker">OPEN SOURCE</span>
+      <h3>Coming soon.</h3>
+      <p>Reusable backend utilities, distributed systems experiments, and developer tools are being prepared for release.</p>
+      <button onClick={() => onExternalLink("https://github.com/vishusharma-rgm")}>Watch GitHub <FiExternalLink /></button>
+    </div>
+  );
+
   return (
     <section className="projects-section" id="projects">
       <h2>Find My Work</h2>
 
       <div className="project-tabs" aria-label="Project categories">
-        <button className="active">Personal</button>
-        <button>Projects</button>
-        <button>Published</button>
-        <button>
+        {tabs.map((tab) => (
+          <button
+            key={tab}
+            className={activeTab === tab ? "active" : ""}
+            onClick={() => setActiveTab(tab)}
+          >
+            {tab}
+          </button>
+        ))}
+        <button className={activeTab === "Terminal" ? "active" : ""} onClick={onOpenTerminal}>
           Terminal
           <span>NEW</span>
         </button>
       </div>
 
-      <div className="project-list">
+      {activeTab === "Case Studies" && renderCaseStudies()}
+      {activeTab === "Open Source" && renderOpenSource()}
+      {activeTab === "Projects" && <div className="project-list">
         {projects.map((project) => (
           <article className="project-card" key={project.id}>
             <ProjectImage type={project.imageType} title={project.name} />
@@ -76,7 +106,7 @@ export default function Projects({ onExternalLink }) {
             </div>
           </article>
         ))}
-      </div>
+      </div>}
     </section>
   );
 }
