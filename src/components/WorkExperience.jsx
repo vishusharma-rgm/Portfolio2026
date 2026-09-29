@@ -83,7 +83,7 @@ export default function WorkExperience() {
         endTrigger: rightColumnRef.current,
         end: "bottom bottom",
         scrub: 2,
-        onUpdate: (self) => setProgress((current) => Math.abs(current - self.progress) > 0.002 ? self.progress : current),
+        onUpdate: (self) => setProgress(self.progress),
       });
     }, sectionRef);
 
