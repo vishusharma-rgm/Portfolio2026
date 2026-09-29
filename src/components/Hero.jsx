@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { FiLink, FiArrowRight } from "react-icons/fi";
+import { FiLink, FiArrowRight, FiFileText } from "react-icons/fi";
 import Mascot3D from "./Mascot3D";
 import MagneticButton from "./MagneticButton";
 import { profile } from "../data/portfolio";
@@ -51,6 +51,9 @@ export default function Hero({ onResume, onOpenTerminal, darkMode }) {
           </MagneticButton>
           <MagneticButton as="a" className="btn btn-outline" href="#projects">
             See Work <FiArrowRight />
+          </MagneticButton>
+          <MagneticButton as="button" className="btn btn-resume" onClick={onResume}>
+            Resume <FiFileText />
           </MagneticButton>
         </motion.div>
 

@@ -13,7 +13,7 @@ function PartsAssemblingModel({ progress }) {
   const groupRef = useRef(null);
   const { scene, animations } = useGLTF("/assets/3d/parts-assembling.glb");
   const robot = useMemo(() => scene.clone(true), [scene]);
-  const { actions } = useAnimations(animations, groupRef);
+  const { actions, mixer } = useAnimations(animations, groupRef);
   const actionRef = useRef(null);
 
   useEffect(() => {
@@ -22,7 +22,9 @@ function PartsAssemblingModel({ progress }) {
     action.reset().play();
     action.setLoop(THREE.LoopOnce, 1);
     action.clampWhenFinished = true;
-    action.paused = true;
+    // The scroll position is the only clock for this animation. The clip must
+    // stay paused, otherwise it can play an extra open/close cycle on its own.
+    action.paused = false;
     action.timeScale = 0;
     action.enabled = true;
     actionRef.current = action;
@@ -32,14 +34,13 @@ function PartsAssemblingModel({ progress }) {
   useFrame(() => {
     if (!groupRef.current) return;
     const scrollProgress = Math.max(0, Math.min(1, progress));
-    const open = scrollProgress < 0.5 ? scrollProgress * 2 : (1 - scrollProgress) * 2;
+    // One complete open-close cycle across the entire experience column.
+    // 0 = closed, 0.5 = fully open, 1 = closed again.
+    const open = Math.sin(scrollProgress * Math.PI);
     const action = actionRef.current;
     if (action) {
-      action.paused = true;
-      action.timeScale = 0;
-      // Open in the middle of every pass, then close at the end.
-      action.time = action.getClip().duration * (1 - open);
-      action.getMixer().update(0);
+      // The asset starts disassembled and finishes assembled.
+      mixer.setTime(action.getClip().duration * open);
     }
   });
 
@@ -71,37 +72,22 @@ export default function WorkExperience() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const revealTriggers = gsap.utils.toArray(".work-experience-section").map((el) =>
-      gsap.fromTo(
-        el,
-        { opacity: 0, y: 60 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: el,
-            start: "top 85%",
-            toggleActions: "play none none none",
-          },
-        }
-      )
-    );
+    const context = gsap.context(() => {
+      gsap.utils.toArray(".work-experience-section").forEach((el) => {
+        gsap.fromTo(el, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none", once: true } });
+      });
 
-    const scrubTrigger = ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: "top top",
-      endTrigger: rightColumnRef.current,
-      end: "bottom bottom",
-      scrub: 3,
-      onUpdate: (self) => setProgress(self.progress),
-    });
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: "top top",
+        endTrigger: rightColumnRef.current,
+        end: "bottom bottom",
+        scrub: 2,
+        onUpdate: (self) => setProgress((current) => Math.abs(current - self.progress) > 0.002 ? self.progress : current),
+      });
+    }, sectionRef);
 
-    return () => {
-      revealTriggers.forEach((tween) => tween.scrollTrigger?.kill());
-      scrubTrigger.kill();
-    };
+    return () => context.revert();
   }, []);
 
   return (

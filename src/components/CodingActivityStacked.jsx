@@ -11,6 +11,15 @@ function toDateKey(timestamp) {
   return new Date(timestamp).toISOString().slice(0, 10);
 }
 
+function ActivityMonths() {
+  const months = useMemo(() => Array.from({ length: 12 }, (_, index) => {
+    const date = new Date();
+    date.setMonth(date.getMonth() - (11 - index));
+    return date.toLocaleString("en-US", { month: "short" });
+  }), []);
+  return <div className="activity-months">{months.map((month, index) => <span key={`${month}-${index}`}>{month}</span>)}</div>;
+}
+
 function ActivityGrid({ counts = {} }) {
   const cells = useMemo(() => {
     const today = new Date();
@@ -27,7 +36,7 @@ function ActivityGrid({ counts = {} }) {
       return { key, value, level };
     });
   }, [counts]);
-  return <div className="activity-grid" aria-label="Last year of activity">{cells.map(({ key, value, level }) => <i className={`level-${level}`} title={`${key}: ${value} submissions`} key={key} />)}</div>;
+  return <div className="activity-heatmap"><ActivityMonths /><div className="activity-grid" aria-label="Last year of activity">{cells.map(({ key, value, level }) => <i className={`level-${level}`} title={`${key}: ${value} submissions`} key={key} />)}</div></div>;
 }
 
 function Stats({ items = [] }) {
@@ -35,19 +44,20 @@ function Stats({ items = [] }) {
 }
 
 function Board({ name, handle, href, icon: Icon, children, status, meta, stats }) {
-  return <article className="activity-row"><div className="activity-row-head"><div className="activity-identity"><Icon /><strong>{name}</strong><span>{handle}</span></div><a href={href} target="_blank" rel="noreferrer" aria-label={`Open ${name} profile`}><FiArrowUpRight /></a></div>{stats?.length > 0 && <Stats items={stats} />}<div className="activity-row-body">{status === "loading" && <div className="activity-state">Loading live activity...</div>}{status === "empty" && <div className="activity-state">Live activity is unavailable right now.</div>}{status === "ready" && children}</div><div className="activity-row-foot"><span>{meta}</span><span>Last 12 months</span></div></article>;
+  return <article className={`activity-row activity-${name.toLowerCase()}`}><div className="activity-row-head"><div className="activity-identity"><span className="activity-platform-icon"><Icon /></span><strong>{name}</strong><span>{handle}</span></div><a href={href} target="_blank" rel="noreferrer" aria-label={`Open ${name} profile`}><FiArrowUpRight /></a></div>{stats?.length > 0 && <Stats items={stats} />}<div className="activity-row-body">{status === "loading" && <div className="activity-state">Loading live activity...</div>}{status === "empty" && <div className="activity-state">Live activity is unavailable right now.</div>}{status === "ready" && children}</div><div className="activity-row-foot"><span>{meta}</span><span>Last 12 months</span></div></article>;
 }
 
 async function loadLeetCodeCalendar() {
-  const query = "query profile($username: String!, $year: Int) { matchedUser(username: $username) { profile { ranking } submitStatsGlobal { acSubmissionNum { difficulty count } } userContestRanking { rating globalRanking } userCalendar(year: $year) { submissionCalendar } } }";
-  const response = await fetch("/api/leetcode", { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify({ operationName: "userProfileCalendar", query, variables: { username: leetcodeHandle, year } }) });
+  const query = "query profile($username: String!, $year: Int) { matchedUser(username: $username) { profile { ranking } submitStatsGlobal { acSubmissionNum { difficulty count } } userCalendar(year: $year) { submissionCalendar } } userContestRanking(username: $username) { rating globalRanking attendedContestsCount } }";
+  const response = await fetch("/api/leetcode", { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify({ operationName: "profile", query, variables: { username: leetcodeHandle, year } }) });
   if (!response.ok) throw new Error("LeetCode API request failed");
   const payload = await response.json();
   const user = payload.data?.matchedUser;
+  const contest = payload.data?.userContestRanking;
   const raw = user?.userCalendar?.submissionCalendar;
   const counts = raw ? Object.fromEntries(Object.entries(JSON.parse(raw)).map(([stamp, count]) => [toDateKey(Number(stamp) * 1000), Number(count) || 0])) : {};
   const solved = Object.fromEntries((user?.submitStatsGlobal?.acSubmissionNum || []).map(({ difficulty, count }) => [difficulty, count]));
-  return { counts, stats: [["Solved", solved.All || 0], ["Easy", solved.Easy || 0], ["Medium", solved.Medium || 0], ["Hard", solved.Hard || 0], ["Rating", Math.round(user?.userContestRanking?.rating || 0) || "-"], ["Rank", user?.profile?.ranking?.toLocaleString?.() || "-"]] };
+  return { counts, stats: [["Solved", solved.All || 0], ["Easy", solved.Easy || 0], ["Medium", solved.Medium || 0], ["Hard", solved.Hard || 0], ["Rating", Math.round(contest?.rating || 0) || "-"], ["Rank", user?.profile?.ranking?.toLocaleString?.() || "-"]] };
 }
 
 async function loadCodeforcesActivity() {

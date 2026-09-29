@@ -5,11 +5,11 @@ import Skills from "./components/Skills";
 import WorkExperience from "./components/WorkExperience";
 import Projects from "./components/Projects";
 import Contact from "./components/Contact";
+import ResumeViewer from "./components/ResumeViewer";
 import Terminal from "./components/Terminal";
 import CodingActivityStacked from "./components/CodingActivityStacked";
 import { ConfettiCanvas, SteamBurst, ExitVeil, FileFlash } from "./components/Effects";
 import { useSound } from "./hooks/useSound";
-import { profile } from "./data/portfolio";
 
 export default function App() {
   const [termOpen, setTermOpen] = useState(false);
@@ -18,6 +18,7 @@ export default function App() {
   const [fileFlashKey, setFileFlashKey] = useState(0);
   const [exitActive, setExitActive] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const [resumeOpen, setResumeOpen] = useState(false);
 
   const { enabled: soundOn, toggle: toggleSound, beep } = useSound();
 
@@ -28,7 +29,7 @@ export default function App() {
   const openResume = useCallback(() => {
     beep(700, 0.1, 0.05, "square");
     setFileFlashKey((k) => k + 1);
-    setTimeout(() => window.open(profile.resume, "_blank"), 420);
+    setResumeOpen(true);
   }, [beep]);
 
   const handleExternalLink = useCallback(
@@ -62,6 +63,7 @@ export default function App() {
       <Projects onExternalLink={handleExternalLink} onOpenTerminal={() => setTermOpen(true)} />
       <CodingActivityStacked />
       <Contact onExternalLink={handleExternalLink} onResume={openResume} />
+      <ResumeViewer open={resumeOpen} onClose={() => setResumeOpen(false)} />
 
       <Terminal
         open={termOpen}
