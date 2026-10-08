@@ -1,41 +1,19 @@
 import { useState } from "react";
-import { FiExternalLink, FiGithub } from "react-icons/fi";
+import { FiExternalLink } from "react-icons/fi";
 import { projects } from "../data/portfolio";
 import "../styles/Projects.css";
 
-function ProjectImage({ type, title }) {
+function ProjectImage({ image, title, variant, live, onExternalLink }) {
   return (
-    <div className={`project-image project-image-${type}`} aria-label={`${title} preview`}>
-      {type === "taskforge" && (
-        <>
-          <span className="queue-line queue-line-a" />
-          <span className="queue-line queue-line-b" />
-          <span className="queue-line queue-line-c" />
-          <div className="queue-core">TF</div>
-          <h3>Distributed Job Processing.</h3>
-          <p>RabbitMQ workers, Redis cache, retry recovery, and observability dashboards.</p>
-        </>
-      )}
-
-      {type === "reviewsync" && (
-        <>
-          <span className="sync-node sync-a" />
-          <span className="sync-node sync-b" />
-          <span className="sync-node sync-c" />
-          <span className="sync-node sync-d" />
-          <h3>Review together, conflict-free.</h3>
-          <p>CRDT + WebSocket sync for collaborative code review.</p>
-        </>
-      )}
-
-      {type === "agentic" && (
-        <>
-          <span className="agent-orbit orbit-a" />
-          <span className="agent-orbit orbit-b" />
-          <span className="agent-core">AI</span>
-          <h3>Autonomous Task Executor.</h3>
-          <p>Tool-using reasoning loop with async orchestration.</p>
-        </>
+    <div className={`project-image project-image-${variant}`} aria-label={`${title} preview`}>
+      <img src={image} alt={`${title} application preview`} />
+      <span className="project-image-shade" aria-hidden="true" />
+      <span className="project-image-label">{title}</span>
+      {live && (
+        <button className="project-image-action" title={`Open ${title} live`} onClick={() => onExternalLink(live)}>
+          <FiExternalLink />
+          <span>Open live project</span>
+        </button>
       )}
     </div>
   );
@@ -47,10 +25,23 @@ export default function Projects({ onExternalLink, onOpenTerminal }) {
   const tabs = ["Projects", "Case Studies", "Open Source"];
 
   const renderCaseStudies = () => (
-    <div className="open-source-coming-soon">
-      <span className="coming-soon-kicker">CASE STUDIES</span>
-      <h3>Coming soon.</h3>
-      <p>Deep dives into architecture decisions, scaling trade-offs, system diagrams, and measurable project outcomes are being written.</p>
+    <div className="case-study-grid">
+      {projects.map((project, index) => (
+        <article className="case-study" key={project.id}>
+          <span className="case-study-index">0{index + 1} / CASE STUDY</span>
+          <h3>{project.name}</h3>
+          <p>{project.description}</p>
+          <div className="case-study-meta">
+            <span>Built with</span>
+            <strong>{project.stack.join(" · ")}</strong>
+          </div>
+          {project.live && (
+            <button className="case-study-link" onClick={() => onExternalLink(project.live)}>
+              Open live project <FiExternalLink />
+            </button>
+          )}
+        </article>
+      ))}
     </div>
   );
 
@@ -88,22 +79,7 @@ export default function Projects({ onExternalLink, onOpenTerminal }) {
       {activeTab === "Projects" && <div className="project-list">
         {projects.map((project) => (
           <article className="project-card" key={project.id}>
-            <ProjectImage type={project.imageType} title={project.name} />
-            <div className="project-card-footer">
-              <h3>{project.name}</h3>
-              <div className="project-links">
-                <button title={`${project.name} GitHub`} onClick={() => onExternalLink(project.github)}>
-                  <FiGithub />
-                  <span>GitHub</span>
-                </button>
-                {project.live && (
-                  <button title={`${project.name} Live`} onClick={() => onExternalLink(project.live)}>
-                    <FiExternalLink />
-                    <span>Live</span>
-                  </button>
-                )}
-              </div>
-            </div>
+            <ProjectImage image={project.image} title={project.name} variant={project.id} live={project.live} onExternalLink={onExternalLink} />
           </article>
         ))}
       </div>}

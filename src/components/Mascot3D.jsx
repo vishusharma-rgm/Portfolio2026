@@ -30,8 +30,9 @@ function CuteRobotModel() {
     groupRef.current.rotation.y = smooth.current.x * THREE.MathUtils.degToRad(25);
     groupRef.current.rotation.x = -smooth.current.y * THREE.MathUtils.degToRad(14);
     groupRef.current.scale.setScalar(1.5);
-    // The GLB's origin sits low, so offset the enlarged model down inside the canvas.
-    groupRef.current.position.y = -0.72 + Math.sin(state.clock.elapsedTime * 1.15) * 0.045;
+    // The GLB's origin sits low; keep the enlarged model comfortably inside the canvas
+    // so the top of the head stays visible while it tilts toward the pointer.
+    groupRef.current.position.y = -0.95 + Math.sin(state.clock.elapsedTime * 1.15) * 0.045;
   });
 
   return <primitive ref={groupRef} object={robot} dispose={null} />;
@@ -53,7 +54,8 @@ export default function Mascot3D({ darkMode = false }) {
       <Canvas
         // Keep a little breathing room around the model so its head never clips
         // when the pointer-driven tilt changes the bounds of the scene.
-        camera={{ position: [0.4, 1.6, 18], fov: 25 }}
+        // A slightly wider view leaves a safe margin above the head during tilt.
+        camera={{ position: [0.4, 1.6, 18], fov: 28 }}
         dpr={[1, 1.8]}
         gl={{ antialias: true, alpha: true }}
         style={{ background: "transparent" }}

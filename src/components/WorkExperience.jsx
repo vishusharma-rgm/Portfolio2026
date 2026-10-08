@@ -1,6 +1,6 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, useAnimations, useGLTF } from "@react-three/drei";
+import { OrbitControls, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -13,36 +13,35 @@ function PartsAssemblingModel({ progress }) {
   const groupRef = useRef(null);
   const { scene, animations } = useGLTF("/assets/3d/parts-assembling.glb");
   const robot = useMemo(() => scene.clone(true), [scene]);
-  const { actions, mixer } = useAnimations(animations, groupRef);
-  const actionRef = useRef(null);
+  const mixer = useMemo(() => new THREE.AnimationMixer(robot), [robot]);
+  const action = useMemo(() => {
+    const clip = animations[0];
+    return clip ? mixer.clipAction(clip) : null;
+  }, [animations, mixer]);
 
   useEffect(() => {
-    const action = actions["Take 001"] || Object.values(actions)[0];
     if (!action) return;
-    action.reset().play();
-    action.setLoop(THREE.LoopOnce, 1);
-    action.clampWhenFinished = true;
-    // The scroll position is the only clock for this animation. The clip must
-    // stay paused, otherwise it can play an extra open/close cycle on its own.
-    action.paused = false;
-    action.timeScale = 0;
-    action.enabled = true;
-    actionRef.current = action;
-    return () => action.stop();
-  }, [actions]);
+    action.reset();
+    action.play();
+    action.paused = true;
+    return () => {
+      action.stop();
+      mixer.stopAllAction();
+    };
+  }, [action, mixer]);
 
   useFrame(() => {
     if (!groupRef.current) return;
     const scrollProgress = Math.max(0, Math.min(1, progress));
-    // One complete open-close cycle across the entire experience column.
-    // 0 = closed, 0.5 = fully open, 1 = closed again.
-    const open = Math.sin(scrollProgress * Math.PI);
-    const action = actionRef.current;
+    // The GLB clip already contains one complete open-close cycle.
+    // Seek through that timeline once as the experience column scrolls.
+    const animationProgress = scrollProgress;
     if (action) {
-      // The asset starts disassembled and finishes assembled.
-      mixer.setTime(action.getClip().duration * open);
+      // Keep the clip paused and use scroll as its only source of time.
+      action.time = action.getClip().duration * animationProgress;
+      mixer.update(0);
     }
-  });
+  }, [action, mixer, progress]);
 
   return <primitive ref={groupRef} object={robot} />;
 }
@@ -76,18 +75,28 @@ export default function WorkExperience() {
       gsap.utils.toArray(".work-experience-section").forEach((el) => {
         gsap.fromTo(el, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none", once: true } });
       });
-
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top top",
-        endTrigger: rightColumnRef.current,
-        end: "bottom bottom",
-        scrub: 2,
-        onUpdate: (self) => setProgress(self.progress),
-      });
     }, sectionRef);
 
-    return () => context.revert();
+    const updateRobotProgress = () => {
+      const section = sectionRef.current;
+      const rightColumn = rightColumnRef.current;
+      if (!section || !rightColumn) return;
+      const pageTop = window.scrollY;
+      const sectionTop = section.getBoundingClientRect().top + pageTop;
+      const sectionEnd = rightColumn.getBoundingClientRect().bottom + pageTop - window.innerHeight;
+      const range = Math.max(1, sectionEnd - sectionTop);
+      setProgress(Math.max(0, Math.min(1, (pageTop - sectionTop) / range)));
+    };
+
+    updateRobotProgress();
+    window.addEventListener("scroll", updateRobotProgress, { passive: true });
+    window.addEventListener("resize", updateRobotProgress);
+
+    return () => {
+      window.removeEventListener("scroll", updateRobotProgress);
+      window.removeEventListener("resize", updateRobotProgress);
+      context.revert();
+    };
   }, []);
 
   return (
