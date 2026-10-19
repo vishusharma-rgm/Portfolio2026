@@ -19,7 +19,7 @@ export default function Terminal({ open, onClose, beep, onEasterEgg, onCoffee, o
   ]);
   const [value, setValue] = useState("");
   const [history, setHistory] = useState([]);
-  const [historyIndex, setHistoryIndex] = useState(-1);
+  const historyIndex = useRef(-1);
   const inputRef = useRef(null);
   const bodyRef = useRef(null);
 
@@ -60,13 +60,13 @@ export default function Terminal({ open, onClose, beep, onEasterEgg, onCoffee, o
   clear         — clear the terminal
   sudo hire me  — ???`,
     whoami: () =>
-      `${profile.name} — CS student, backend & distributed systems focus.\nCurrently building: queues, caches, and things that shouldn't fall over.`,
+      `${profile.name} — CS student, full-stack & distributed systems focus.\nCurrently building: thoughtful interfaces, reliable APIs, and things that shouldn't fall over.`,
     skills: () => skillsFlat,
     stack: () => skillsFlat,
     projects: () => projectsText,
-    "case-study": () => projects.map((p) => `${p.name}\n  problem: ${p.description}\n  stack: ${p.stack.join(", ")}\n  result: scalable backend workflow with measurable reliability gains.`).join("\n\n"),
-    "open-source": () => `Focus areas:\n  • distributed systems and queue workers\n  • Java/Spring Boot backend patterns\n  • WebSocket and CRDT collaboration\n  • reusable API, caching, and observability tooling\n\nGitHub: ${profile.github}`,
-    status: () => `BUILD: online\nFOCUS: backend systems + distributed workflows\nSTACK: Java, Spring Boot, PostgreSQL, Redis, RabbitMQ\nMODE: shipping reliable systems`,
+    "case-study": () => projects.map((p) => `${p.name}\n  problem: ${p.description}\n  stack: ${p.stack.join(", ")}\n  result: scalable full-stack workflow with measurable reliability gains.`).join("\n\n"),
+    "open-source": () => `Focus areas:\n  • distributed systems and queue workers\n  • Java/Spring Boot product architecture\n  • WebSocket and CRDT collaboration\n  • reusable API, caching, and observability tooling\n\nGitHub: ${profile.github}`,
+    status: () => `BUILD: online\nFOCUS: full-stack products + distributed workflows\nSTACK: Java, Spring Boot, PostgreSQL, Redis, RabbitMQ\nMODE: shipping reliable systems`,
     tree: () => `portfolio/\n├── hero/\n├── experience/\n├── projects/\n├── terminal/\n└── contact/`,
     resume: () => {
       onResume();
@@ -83,7 +83,7 @@ export default function Terminal({ open, onClose, beep, onEasterEgg, onCoffee, o
   const run = (raw) => {
     const cmd = raw.trim().toLowerCase();
     if (cmd) setHistory((prev) => [...prev.slice(-19), raw]);
-    setHistoryIndex(-1);
+    historyIndex.current = -1;
     setLines((prev) => [...prev, { type: "echo", text: raw }]);
     if (cmd === "") return;
     if (cmd === "clear") {
@@ -166,18 +166,14 @@ export default function Terminal({ open, onClose, beep, onEasterEgg, onCoffee, o
                     setValue("");
                   } else if (e.key === "ArrowUp") {
                     e.preventDefault();
-                    setHistoryIndex((index) => {
-                      const next = Math.max(0, index < 0 ? history.length - 1 : index - 1);
-                      setValue(history[next] || "");
-                      return next;
-                    });
+                    historyIndex.current = Math.max(0, historyIndex.current < 0 ? history.length - 1 : historyIndex.current - 1);
+                    const next = historyIndex.current;
+                    setValue(history[next] || "");
                   } else if (e.key === "ArrowDown") {
                     e.preventDefault();
-                    setHistoryIndex((index) => {
-                      const next = Math.min(history.length, index + 1);
-                      setValue(history[next] || "");
-                      return next;
-                    });
+                    historyIndex.current = Math.min(history.length, historyIndex.current + 1);
+                    const next = historyIndex.current;
+                    setValue(history[next] || "");
                   } else {
                     beep(300 + Math.random() * 80, 0.02, 0.02);
                   }

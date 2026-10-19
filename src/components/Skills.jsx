@@ -11,7 +11,6 @@ import {
   SiRabbitmq,
   SiRedis,
   SiSpringboot,
-  SiTypescript,
 } from "react-icons/si";
 import { FiCode, FiCpu, FiGitBranch, FiServer } from "react-icons/fi";
 import "../styles/Skills.css";
@@ -349,7 +348,7 @@ export default function Skills() {
       <CanvasSkills />
 
       <div className="downloads-heading">
-        <span>Reliable</span> Backend Systems
+        <span>Reliable</span> Full-Stack Systems
       </div>
 
       <div className="skills-marquee" aria-label="Technology stack marquee">

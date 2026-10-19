@@ -1,9 +1,9 @@
 export const profile = {
   name: "Vishu Sharma",
-  role: "Backend Engineer",
-  tagline: "Backend Engineer • Java Developer • Distributed Systems Builder",
+  role: "Full Stack Engineer",
+  tagline: "Full Stack Engineer • Java Developer • Product Builder",
   blurb:
-    "B.Tech Computer Science student building distributed, fault-tolerant systems and full-stack products with a focus on reliability, concurrency, and thoughtful user experiences.",
+    "B.Tech Computer Science student building polished full-stack products and reliable distributed systems across the interface, API, data, and deployment layers.",
   email: "sharmavansh1809@gmail.com",
   linkedin: "https://www.linkedin.com/in/vishu-kush-293a0432a/",
   github: "https://github.com/vishusharma-rgm",
@@ -79,6 +79,8 @@ export const projects = [
     stack: ["Java", "Spring Boot", "PostgreSQL", "RabbitMQ", "Redis", "React.js"],
     description:
       "A distributed job processing system for reliable background work, with RabbitMQ queues, horizontal scaling, retry/recovery, Redis synchronization, and live observability.",
+    focus: "reliable background work",
+    outcome: "Queues, retries, recovery, and observability in one operational surface.",
     github: null,
     live: "https://task-forge-8zwz.onrender.com",
   },
@@ -90,6 +92,8 @@ export const projects = [
     stack: ["Next.js", "Node.js", "PostgreSQL", "WebSockets", "Yjs CRDT"],
     description:
       "A real-time collaborative code review platform with CRDT conflict resolution, WebSocket synchronization, inline comments, RBAC, suggestions, and version history.",
+    focus: "conflict-free collaboration",
+    outcome: "Multiple reviewers can work together without stepping on each other.",
     github: null,
     live: "https://review-sync-1.onrender.com",
   },
@@ -101,6 +105,8 @@ export const projects = [
     stack: ["AI", "ATS Analysis", "Skill Matching"],
     description:
       "An AI-assisted resume workflow that helps candidates improve ATS readiness through skill matching, structured recommendations, and interview-focused feedback.",
+    focus: "career tooling",
+    outcome: "Turns a static resume into a practical improvement loop.",
     github: null,
     live: "https://resume-pilot-one.vercel.app",
   },
@@ -112,6 +118,8 @@ export const projects = [
     stack: ["Personal Finance", "Budgets", "Analytics"],
     description:
       "A calm personal finance workspace for tracking expenses, income, budgets, and category trends without overwhelming dashboards.",
+    focus: "calm data design",
+    outcome: "Useful financial signals without dashboard overload.",
     github: null,
     live: "https://smart-expense-tracker-zeta-one.vercel.app",
   },
@@ -141,7 +149,7 @@ export const workExperiences = [
 
 export const bootLines = [
   "BIOS v4.2.1 — initializing kernel...",
-  "loading modules: [backend] [distributed-systems] [realtime]",
+  "loading modules: [full-stack] [distributed-systems] [realtime]",
   "mounting /dev/vishu ... OK",
   "checking dependencies: java, spring-boot, postgres, redis... OK",
   "warning: sleep_schedule not found — using defaults",

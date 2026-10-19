@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
-import { FiLink, FiArrowRight, FiFileText } from "react-icons/fi";
+import { FiLink, FiArrowRight, FiFileText, FiGithub, FiMapPin } from "react-icons/fi";
 import Mascot3D from "./Mascot3D";
 import MagneticButton from "./MagneticButton";
 import { profile } from "../data/portfolio";
 import "../styles/Hero.css";
 
-export default function Hero({ onResume, onOpenTerminal, darkMode }) {
+export default function Hero({ onResume, darkMode }) {
   const [first, ...rest] = profile.role.split(" ");
   const restWord = rest.join(" ");
 
@@ -31,6 +31,16 @@ export default function Hero({ onResume, onOpenTerminal, darkMode }) {
           <span className="hero-heading-sans">{restWord}.</span>
         </motion.h1>
 
+        <motion.div
+          className="hero-kicker"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.34, duration: 0.6 }}
+        >
+          <span className="status-dot" />
+          Available for full-stack opportunities
+        </motion.div>
+
         <motion.p
           className="hero-blurb"
           initial={{ opacity: 0, y: 16 }}
@@ -41,10 +51,21 @@ export default function Hero({ onResume, onOpenTerminal, darkMode }) {
         </motion.p>
 
         <motion.div
+          className="hero-proof"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.48, duration: 0.6 }}
+        >
+          <span><FiMapPin /> Lucknow, India</span>
+          <span><FiGithub /> Open-source minded</span>
+          <span>Java · Spring · React · Distributed systems</span>
+        </motion.div>
+
+        <motion.div
           className="hero-ctas"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.54, duration: 0.6 }}
+          transition={{ delay: 0.62, duration: 0.6 }}
         >
           <MagneticButton as="a" className="btn btn-dark" href="#contact">
             Connect <FiLink />
@@ -61,10 +82,10 @@ export default function Hero({ onResume, onOpenTerminal, darkMode }) {
           className="hero-tagline"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.68, duration: 0.6 }}
+          transition={{ delay: 0.76, duration: 0.6 }}
         >
           {profile.name} also has interests in{" "}
-          <strong>Distributed Systems, System Design and Backend Architecture.</strong>
+          <strong>Product Engineering, Distributed Systems and System Design.</strong>
         </motion.p>
       </div>
     </section>

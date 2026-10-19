@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FiExternalLink } from "react-icons/fi";
+import { FiArrowUpRight, FiExternalLink } from "react-icons/fi";
 import { projects } from "../data/portfolio";
 import "../styles/Projects.css";
 
@@ -31,6 +31,7 @@ export default function Projects({ onExternalLink, onOpenTerminal }) {
           <span className="case-study-index">0{index + 1} / CASE STUDY</span>
           <h3>{project.name}</h3>
           <p>{project.description}</p>
+          <span className="case-study-outcome"><strong>Focus</strong> {project.focus}</span>
           <div className="case-study-meta">
             <span>Built with</span>
             <strong>{project.stack.join(" · ")}</strong>
@@ -47,16 +48,25 @@ export default function Projects({ onExternalLink, onOpenTerminal }) {
 
   const renderOpenSource = () => (
     <div className="open-source-coming-soon">
-      <span className="coming-soon-kicker">OPEN SOURCE</span>
-      <h3>Coming soon.</h3>
-      <p>Reusable backend utilities, distributed systems experiments, and developer tools are being prepared for release.</p>
-      <button onClick={() => onExternalLink("https://github.com/vishusharma-rgm")}>Watch GitHub <FiExternalLink /></button>
+      <span className="coming-soon-kicker">OPEN SOURCE / BUILDING IN PUBLIC</span>
+      <h3>Useful systems, shared openly.</h3>
+      <p>My public work sits at the intersection of system reliability, real-time collaboration, and developer-focused tools.</p>
+      <div className="proof-grid">
+        <span><strong>01</strong> Distributed systems</span>
+        <span><strong>02</strong> Realtime products</span>
+        <span><strong>03</strong> Developer tooling</span>
+      </div>
+      <button onClick={() => onExternalLink("https://github.com/vishusharma-rgm")}>Explore GitHub <FiExternalLink /></button>
     </div>
   );
 
   return (
     <section className="projects-section" id="projects">
-      <h2>Find My Work</h2>
+      <div className="section-heading">
+        <span className="eyebrow">Selected work</span>
+        <h2>Systems that do more than look good.</h2>
+        <p>Production-minded full-stack projects built around reliability, collaboration, and useful experiences.</p>
+      </div>
 
       <div className="project-tabs" aria-label="Project categories">
         {tabs.map((tab) => (
@@ -80,6 +90,14 @@ export default function Projects({ onExternalLink, onOpenTerminal }) {
         {projects.map((project) => (
           <article className="project-card" key={project.id}>
             <ProjectImage image={project.image} title={project.name} variant={project.id} live={project.live} onExternalLink={onExternalLink} />
+            <div className="project-card-footer">
+              <div className="project-card-copy">
+                <div className="project-card-heading"><h3>{project.name}</h3><span>{project.year}</span></div>
+                <p>{project.outcome}</p>
+                <div className="project-stack">{project.stack.join(" · ")}</div>
+              </div>
+              {project.live && <button className="project-open-link" onClick={() => onExternalLink(project.live)} aria-label={`Open ${project.name} live project`}><FiArrowUpRight /></button>}
+            </div>
           </article>
         ))}
       </div>}

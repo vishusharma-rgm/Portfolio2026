@@ -22,7 +22,7 @@ export default function Contact({ onExternalLink, onResume }) {
           <div className="contact-layout">
             <div className="contact-copy">
               <h2 className="h">Let's make something useful.</h2>
-              <p className="lead">Have an idea, a rough brief, or a backend problem that needs untangling? Send it over. I enjoy making software simpler, faster, and more dependable.</p>
+              <p className="lead">Have an idea, a rough brief, or a product problem that needs untangling? Send it over. I enjoy making software simpler, faster, and more dependable.</p>
               <a className="contact-email" href={`mailto:${profile.email}`} onClick={(e) => { e.preventDefault(); onExternalLink(`mailto:${profile.email}`); }}><FiMail /> Start with an email <FiArrowUpRight /></a>
               <div className="contact-actions"><a href={profile.resume} onClick={(e) => { e.preventDefault(); onResume(); }}><FiDownload /> Resume</a><a href={profile.github} target="_blank" rel="noreferrer"><FiGithub /> GitHub</a><a href={profile.linkedin} target="_blank" rel="noreferrer"><FiLinkedin /> LinkedIn</a></div>
             </div>

@@ -17,13 +17,17 @@ export default function App() {
   const [steamKey, setSteamKey] = useState(0);
   const [fileFlashKey, setFileFlashKey] = useState(0);
   const [exitActive, setExitActive] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.localStorage.getItem("portfolio-theme") === "dark";
+  });
   const [resumeOpen, setResumeOpen] = useState(false);
 
-  const { enabled: soundOn, toggle: toggleSound, beep } = useSound();
+  const { beep } = useSound();
 
   useEffect(() => {
     document.documentElement.dataset.theme = darkMode ? "dark" : "light";
+    window.localStorage.setItem("portfolio-theme", darkMode ? "dark" : "light");
   }, [darkMode]);
 
   const openResume = useCallback(() => {
@@ -47,8 +51,6 @@ export default function App() {
   return (
     <>
       <TopBar
-        soundOn={soundOn}
-        onToggleSound={toggleSound}
         darkMode={darkMode}
         onToggleTheme={() => {
           beep(520, 0.08, 0.045);
@@ -56,7 +58,7 @@ export default function App() {
         }}
       />
 
-      <Hero onOpenTerminal={() => setTermOpen(true)} onResume={openResume} darkMode={darkMode} />
+      <Hero onResume={openResume} darkMode={darkMode} />
 
       <Skills />
       <WorkExperience />

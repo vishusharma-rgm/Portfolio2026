@@ -139,9 +139,14 @@
 
 [data-theme="dark"] .topbar .brand,
 [data-theme="dark"] .icon-btn {
-  background: rgba(17, 17, 17, 0.78);
-  border-color: rgba(255, 255, 255, 0.18);
-  box-shadow: 0 12px 32px -14px rgba(0, 0, 0, 0.75);
+  background: rgba(28, 43, 50, 0.84);
+  border-color: rgba(196, 216, 218, 0.24);
+  box-shadow: 0 12px 34px -14px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .theme-toggle {
+  color: var(--brass);
+  box-shadow: 0 0 0 1px rgba(255, 195, 110, 0.08), 0 12px 34px -14px rgba(0, 0, 0, 0.8);
 }
 
 @media (max-width: 680px) {
@@ -178,7 +183,7 @@
 
   .topbar .right {
     right: 16px;
-    display: none;
+    display: flex;
   }
 
   .icon-btn {

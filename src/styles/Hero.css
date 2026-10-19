@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: flex-start;
   overflow: visible;
-  padding: 88px 16px 20px;
+  padding: 94px 16px 42px;
   text-align: center;
 }
 
@@ -24,6 +24,28 @@
   filter: drop-shadow(0 24px 36px rgba(30, 40, 90, 0.22));
   width: 300px;
   max-width: 70vw;
+}
+
+.hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 24px;
+  padding: 8px 13px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  background: color-mix(in srgb, var(--card-bg) 78%, transparent);
+  font: 11px var(--font-mono);
+  letter-spacing: 0.02em;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--success) 16%, transparent), 0 0 16px color-mix(in srgb, var(--success) 55%, transparent);
 }
 
 .hero-heading {
@@ -62,6 +84,27 @@
   line-height: 1.45;
 }
 
+.hero-proof {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 9px 18px;
+  margin-top: 18px;
+  color: var(--muted);
+  font: 11px var(--font-mono);
+}
+
+.hero-proof span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hero-proof svg {
+  color: var(--orange);
+  font-size: 13px;
+}
+
 .hero-ctas {
   margin-top: 24px;
   display: flex;
@@ -79,8 +122,10 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  transition: box-shadow 0.25s ease, background 0.25s ease;
+  transition: box-shadow 0.25s ease, background 0.25s ease, transform 0.25s ease;
 }
+
+.btn:hover { transform: translateY(-2px); }
 
 .btn-dark {
   background: var(--ink);
@@ -144,9 +189,14 @@
 .btn-resume:hover { border-color: var(--orange); box-shadow: 0 14px 30px -12px rgba(23, 21, 18, .28); }
 
 [data-theme="dark"] .btn-outline {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(29, 45, 52, 0.78);
   color: var(--ink);
-  border-color: rgba(255, 255, 255, 0.18);
+  border-color: rgba(197, 216, 218, 0.27);
+}
+
+[data-theme="dark"] .btn-resume {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(197, 216, 218, 0.2);
 }
 
 .hero-tagline {
@@ -181,6 +231,9 @@
     font-size: 36px;
     line-height: 44px;
   }
+
+  .hero-kicker { max-width: calc(100vw - 34px); text-align: left; line-height: 1.35; }
+  .hero-proof { gap: 8px 12px; font-size: 10px; }
 
   .btn {
     font-size: 16px;

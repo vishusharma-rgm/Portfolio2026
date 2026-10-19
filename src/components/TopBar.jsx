@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { FiMenu, FiMoon, FiSun, FiVolume2, FiVolumeX, FiX } from "react-icons/fi";
+import { FiMenu, FiMoon, FiSun, FiX } from "react-icons/fi";
 import { profile } from "../data/portfolio";
 import "../styles/TopBar.css";
 
-export default function TopBar({ soundOn, onToggleSound, darkMode, onToggleTheme }) {
+export default function TopBar({ darkMode, onToggleTheme }) {
   const [expanded, setExpanded] = useState(false);
   const [hovered, setHovered] = useState(false);
   const menuOpen = expanded || hovered;
@@ -32,10 +32,7 @@ export default function TopBar({ soundOn, onToggleSound, darkMode, onToggleTheme
         </nav>
       </div>
       <div className="right">
-        <button className="icon-btn" onClick={onToggleSound} title={soundOn ? "Mute" : "Sound on"}>
-          {soundOn ? <FiVolume2 /> : <FiVolumeX />}
-        </button>
-        <button className="icon-btn" onClick={onToggleTheme} title={darkMode ? "Light mode" : "Dark mode"}>
+        <button className="icon-btn theme-toggle" onClick={onToggleTheme} title={darkMode ? "Switch to light mode" : "Switch to dark mode"} aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}>
           {darkMode ? <FiSun /> : <FiMoon />}
         </button>
       </div>
