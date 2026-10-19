@@ -28,10 +28,10 @@
 }
 
 [data-theme="dark"] {
-  --bg-cream: #000000;
-  --bg-cream-2: #0d0d0d;
-  --sky-blue: #000000;
-  --sky-blue-2: #000000;
+  --bg-cream: #121212;
+  --bg-cream-2: #1d1d1d;
+  --sky-blue: #121212;
+  --sky-blue-2: #121212;
   --ink: #f4f7fb;
   --ink-soft: #c8d2d5;
   --muted: #91a0a5;
@@ -39,7 +39,7 @@
   --line: rgba(255, 255, 255, 0.14);
   --line-strong: rgba(255, 255, 255, 0.26);
   --pill-bg: rgba(255, 255, 255, 0.1);
-  --card-bg: #0b0b0b;
+  --card-bg: #1a1a1a;
   --orange: #ff9a62;
   --orange-soft: rgba(255, 154, 98, 0.16);
   --success: #58d79a;
@@ -131,7 +131,7 @@ body::before {
   width: auto;
   height: 100%;
   opacity: 0;
-  background-color: #000000;
+  background-color: #121212;
   background-image: url("/noise.avif");
   background-repeat: repeat;
   background-size: 300px 300px;
@@ -146,7 +146,7 @@ body::before {
 }
 
 [data-theme="dark"] body {
-  background-color: #000000;
+  background-color: #121212;
   background-image: none;
 }
 

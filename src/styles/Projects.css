@@ -225,7 +225,7 @@
 
 [data-theme="dark"] .project-card {
   border: 1px dashed rgba(194, 213, 215, 0.18);
-  background: #0b0b0b;
+  background: #1a1a1a;
   box-shadow: 0 18px 50px -30px rgba(0, 0, 0, 0.9);
 }
 
