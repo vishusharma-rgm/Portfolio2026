@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { FiArrowUpRight, FiExternalLink } from "react-icons/fi";
+import { useRef, useState } from "react";
+import { FiArrowLeft, FiArrowRight, FiArrowUpRight, FiExternalLink } from "react-icons/fi";
 import { projects } from "../data/portfolio";
 import "../styles/Projects.css";
 
@@ -21,42 +21,22 @@ function ProjectImage({ image, title, variant, live, onExternalLink }) {
 
 export default function Projects({ onExternalLink, onOpenTerminal }) {
   const [activeTab, setActiveTab] = useState("Projects");
+  const projectListRef = useRef(null);
 
   const tabs = ["Projects", "Case Studies", "Open Source"];
 
-  const renderCaseStudies = () => (
-    <div className="case-study-grid">
-      {projects.map((project, index) => (
-        <article className="case-study" key={project.id}>
-          <span className="case-study-index">0{index + 1} / CASE STUDY</span>
-          <h3>{project.name}</h3>
-          <p>{project.description}</p>
-          <span className="case-study-outcome"><strong>Focus</strong> {project.focus}</span>
-          <div className="case-study-meta">
-            <span>Built with</span>
-            <strong>{project.stack.join(" · ")}</strong>
-          </div>
-          {project.live && (
-            <button className="case-study-link" onClick={() => onExternalLink(project.live)}>
-              Open live project <FiExternalLink />
-            </button>
-          )}
-        </article>
-      ))}
-    </div>
-  );
+  const moveProjects = (direction) => {
+    projectListRef.current?.scrollBy({
+      left: direction * projectListRef.current.clientWidth * 0.82,
+      behavior: "smooth",
+    });
+  };
 
-  const renderOpenSource = () => (
+  const renderComingSoon = (label, description) => (
     <div className="open-source-coming-soon">
-      <span className="coming-soon-kicker">OPEN SOURCE / BUILDING IN PUBLIC</span>
-      <h3>Useful systems, shared openly.</h3>
-      <p>My public work sits at the intersection of system reliability, real-time collaboration, and developer-focused tools.</p>
-      <div className="proof-grid">
-        <span><strong>01</strong> Distributed systems</span>
-        <span><strong>02</strong> Realtime products</span>
-        <span><strong>03</strong> Developer tooling</span>
-      </div>
-      <button onClick={() => onExternalLink("https://github.com/vishusharma-rgm")}>Explore GitHub <FiExternalLink /></button>
+      <span className="coming-soon-kicker">{label}</span>
+      <h3>Coming soon.</h3>
+      <p>{description}</p>
     </div>
   );
 
@@ -84,9 +64,19 @@ export default function Projects({ onExternalLink, onOpenTerminal }) {
         </button>
       </div>
 
-      {activeTab === "Case Studies" && renderCaseStudies()}
-      {activeTab === "Open Source" && renderOpenSource()}
-      {activeTab === "Projects" && <div className="project-list">
+      {activeTab === "Case Studies" && renderComingSoon("CASE STUDIES", "Detailed project breakdowns, decisions, and outcomes will be published here soon.")}
+      {activeTab === "Open Source" && renderComingSoon("OPEN SOURCE", "Public repositories, developer tooling, and build-in-public work are coming soon.")}
+      {activeTab === "Projects" && <>
+        <div className="project-carousel-controls" aria-label="Project carousel controls">
+          <button type="button" onClick={() => moveProjects(-1)} aria-label="Show previous projects">
+            <FiArrowLeft />
+          </button>
+          <span>Swipe or use arrows</span>
+          <button type="button" onClick={() => moveProjects(1)} aria-label="Show next projects">
+            <FiArrowRight />
+          </button>
+        </div>
+        <div className="project-list" ref={projectListRef}>
         {projects.map((project) => (
           <article className="project-card" key={project.id}>
             <ProjectImage image={project.image} title={project.name} variant={project.id} live={project.live} onExternalLink={onExternalLink} />
@@ -100,7 +90,8 @@ export default function Projects({ onExternalLink, onOpenTerminal }) {
             </div>
           </article>
         ))}
-      </div>}
+        </div>
+      </>}
     </section>
   );
 }

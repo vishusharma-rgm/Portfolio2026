@@ -127,6 +127,15 @@ export const projects = [
 
 export const workExperiences = [
   {
+    title: "Java Developer Intern",
+    company: "Infotact Solutions",
+    period: "Oct 2026 – Present · Remote",
+    bullets: [
+      "Developed and tested Java modules using Core Java and OOP in a team-based live project, following coding guidelines and Git.",
+      "Worked in an Agile team on planning and weekly reviews; completed Java training and a Professional Domain Certification via DevsIndia.",
+    ],
+  },
+  {
     title: "Software Engineering Intern (Full Stack)",
     company: "Cognifyz Technologies",
     period: "Apr 2026 - May 2026 · Remote",
