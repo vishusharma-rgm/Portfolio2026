@@ -28,18 +28,18 @@
 }
 
 [data-theme="dark"] {
-  --bg-cream: #1b2930;
-  --bg-cream-2: #26363d;
-  --sky-blue: #1b2930;
-  --sky-blue-2: #22333a;
+  --bg-cream: #000000;
+  --bg-cream-2: #0d0d0d;
+  --sky-blue: #000000;
+  --sky-blue-2: #000000;
   --ink: #f4f7fb;
   --ink-soft: #c8d2d5;
   --muted: #91a0a5;
-  --grey: rgba(201, 216, 219, 0.1);
-  --line: rgba(194, 211, 214, 0.17);
-  --line-strong: rgba(211, 226, 228, 0.3);
-  --pill-bg: rgba(202, 218, 220, 0.1);
-  --card-bg: rgba(31, 46, 53, 0.74);
+  --grey: rgba(255, 255, 255, 0.08);
+  --line: rgba(255, 255, 255, 0.14);
+  --line-strong: rgba(255, 255, 255, 0.26);
+  --pill-bg: rgba(255, 255, 255, 0.1);
+  --card-bg: #0b0b0b;
   --orange: #ff9a62;
   --orange-soft: rgba(255, 154, 98, 0.16);
   --success: #58d79a;
@@ -130,8 +130,8 @@ body::before {
   inset: 0;
   width: auto;
   height: 100%;
-  opacity: 0.24;
-  background-color: #1b2930;
+  opacity: 0;
+  background-color: #000000;
   background-image: url("/noise.avif");
   background-repeat: repeat;
   background-size: 300px 300px;
@@ -146,7 +146,7 @@ body::before {
 }
 
 [data-theme="dark"] body {
-  background-color: #1b2930;
+  background-color: #000000;
   background-image: none;
 }
 

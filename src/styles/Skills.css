@@ -86,11 +86,11 @@
 }
 
 [data-theme="dark"] .skills-marquee::before {
-  background: linear-gradient(90deg, var(--bg-cream), rgba(28, 42, 49, 0));
+  background: linear-gradient(90deg, var(--bg-cream), rgba(0, 0, 0, 0));
 }
 
 [data-theme="dark"] .skills-marquee::after {
-  background: linear-gradient(270deg, var(--bg-cream), rgba(28, 42, 49, 0));
+  background: linear-gradient(270deg, var(--bg-cream), rgba(0, 0, 0, 0));
 }
 
 .marquee-row {
